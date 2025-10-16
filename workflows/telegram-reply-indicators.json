@@ -1,0 +1,225 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        928,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Show reply indicator (typing or audio recording)",
+        "height": 416,
+        "width": 592
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "0c92d8aa-4ad3-40a8-b5a3-49942eeed1c8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5c5c9033-e2a5-417d-beeb-ee8a9d8ebd08",
+                    "leftValue": "={{ $json.message.voice }}",
+                    "rightValue": "={{ $json.result.reply_to_message.text }}",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notExists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3da55fb8-2bc2-4fab-bebb-41b44586ebbe",
+                    "leftValue": "={{ $json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1136,
+        496
+      ],
+      "id": "97722de0-cba6-4792-a1d0-78b60b16c53b",
+      "name": "Select indicator"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "action": "record_video"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1360,
+        480
+      ],
+      "id": "c9d2b158-954f-45c2-b0b1-75b559eddb60",
+      "name": "Typing indicator",
+      "webhookId": "33426bcb-d3eb-4620-a282-68301a3281bc",
+      "credentials": {
+        "telegramApi": {
+          "id": "S2V9BbqgghM1McJ5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "action": "record_audio"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1360,
+        672
+      ],
+      "id": "f3eb5040-9089-49d1-a749-427ec882ceb0",
+      "name": "Recording indicator",
+      "webhookId": "93f05808-cb1d-4cf7-af52-ce9ac032b322",
+      "credentials": {
+        "telegramApi": {
+          "id": "S2V9BbqgghM1McJ5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "=6"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1584,
+        672
+      ],
+      "id": "3aa25aa6-17e3-44e6-a0cb-cbb7973b2dcb",
+      "name": "5000ms",
+      "webhookId": "ed926534-45a6-49ba-a10a-0ad31f524529"
+    }
+  ],
+  "connections": {
+    "Trigger": {
+      "main": [
+        [
+          {
+            "node": "Select indicator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select indicator": {
+      "main": [
+        [
+          {
+            "node": "Typing indicator",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Recording indicator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Typing indicator": {
+      "main": [
+        [
+          {
+            "node": "5000ms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recording indicator": {
+      "main": [
+        [
+          {
+            "node": "5000ms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5000ms": {
+      "main": [
+        [
+          {
+            "node": "Select indicator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "54d00e049b1cac29d0ca14ad746de236ffb3e85c2d24d6c293bec1a5142ddd16"
+  }
+}

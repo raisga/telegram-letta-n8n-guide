@@ -1,0 +1,586 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true,
+          "imageSize": "large"
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        656,
+        -16
+      ],
+      "id": "8d67e18b-67f0-47bf-a224-fe3888d2b7b9",
+      "name": "Telegram Trigger",
+      "webhookId": "f8548f3f-540b-4f7f-870f-028e1425746f",
+      "credentials": {
+        "telegramApi": {
+          "id": "S2V9BbqgghM1McJ5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-globals.globalConstants",
+      "typeVersion": 1,
+      "position": [
+        992,
+        -16
+      ],
+      "id": "4621d195-6828-412f-a545-01be92109f7f",
+      "name": "Global Constants",
+      "credentials": {
+        "globalConstantsApi": {
+          "id": "CthfkYLQTPa4Dyj2",
+          "name": "Global Constants account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "agentId": "={{ $('Global Constants').item.json.constants.LETTA_AGENT_ID }}",
+        "message": "={{ $('Telegram Trigger').item.json.message.text || $json.text }}",
+        "additionalOptions": {
+          "max_steps": 10,
+          "use_assistant_message": true,
+          "enable_thinking": false
+        }
+      },
+      "type": "@letta-ai/n8n-nodes-letta.letta",
+      "typeVersion": 1,
+      "position": [
+        2272,
+        -32
+      ],
+      "id": "f2383f08-1dae-4379-94c1-8e83c94620d5",
+      "name": "Letta",
+      "credentials": {
+        "lettaApi": {
+          "id": "dpttuyJv0Vxhr4Wt",
+          "name": "Letta account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $('Letta').item.json.messages[$('Letta').item.json.messages.length -1].content }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2896,
+        -48
+      ],
+      "id": "f04855d0-53d8-4488-a599-2f1ac4c711c9",
+      "name": "Send a text message",
+      "webhookId": "64ba0243-d4fa-4944-84ab-c7eab624d400",
+      "credentials": {
+        "telegramApi": {
+          "id": "S2V9BbqgghM1McJ5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2016,
+        112
+      ],
+      "id": "6fea46ae-7645-4ccb-9b8f-f9dc8d3ca759",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "59NhhLWRJluVAtCu",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2896,
+        144
+      ],
+      "id": "d86453e0-717f-45c1-9596-c97cd1780dec",
+      "name": "Send an audio file",
+      "webhookId": "c52bbf80-fa6c-4661-b600-cdbd46d62c96",
+      "credentials": {
+        "telegramApi": {
+          "id": "S2V9BbqgghM1McJ5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "input": "={{ $('Letta').item.json.messages[$('Letta').item.json.messages.length -1].content }}",
+        "options": {
+          "response_format": "opus"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2704,
+        144
+      ],
+      "id": "cab0d233-d427-4846-b3ed-702c3dc05b7c",
+      "name": "Generate audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "59NhhLWRJluVAtCu",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b5fbc8c8-c6a3-4d92-9a27-469080813bbb",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notExists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d5ea9c30-e694-41ce-a592-7a6728c633b7",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2496,
+        -32
+      ],
+      "id": "ea5fcf89-77af-4432-aa7d-c6b45595bcf7",
+      "name": "If by media type"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1840,
+        112
+      ],
+      "id": "843d6f17-ae30-4805-a53a-5e21585144c1",
+      "name": "Get audio",
+      "webhookId": "7acfcbd7-79bd-404d-87dd-e804907c8ecb",
+      "credentials": {
+        "telegramApi": {
+          "id": "S2V9BbqgghM1McJ5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Reply indicator",
+        "height": 240,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1200,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "ebdc74ae-646d-4550-bf2d-3500f83a2017",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Receives Telegram message (text or audio)",
+        "height": 256,
+        "width": 352,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        528,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "29232bf1-a023-4807-a094-e203b50f6c76",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Get constants and variables",
+        "height": 256,
+        "width": 224,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        928,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "a07a693a-2b9e-461e-b0ca-484e534dd468",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Transcribe audio",
+        "height": 224,
+        "width": 400,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1776,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "7e56ad4f-0aac-464b-8d51-7b187cdcf773",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## AI Agent",
+        "height": 224,
+        "width": 192,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2224,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "005993a4-79d5-44cf-bff7-ec25e1feb099",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Send message Telegram bot",
+        "height": 416,
+        "width": 624,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2464,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "76a6338a-2258-4a50-8298-6cf7a38560b3",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5c5c9033-e2a5-417d-beeb-ee8a9d8ebd08",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.voice }}",
+                    "rightValue": "={{ $json.result.reply_to_message.text }}",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notExists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3da55fb8-2bc2-4fab-bebb-41b44586ebbe",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1552,
+        -16
+      ],
+      "id": "3ba1fb31-c9c6-48a0-a835-70ec164e2be4",
+      "name": "Route by type"
+    },
+    {
+      "parameters": {
+        "content": "## Route (if voice note)",
+        "height": 240,
+        "width": 256,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1472,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "5a800dcb-a00a-4a1f-a160-e499c429d48c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "xuKNBTeWp8fC3OGq",
+          "mode": "list",
+          "cachedResultName": "AI_TelegramChat"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1264,
+        -16
+      ],
+      "id": "24e2612c-2554-4ffc-a9c9-b6817b5a9042",
+      "name": "Execute Workflow"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Global Constants",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Global Constants": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Letta": {
+      "main": [
+        [
+          {
+            "node": "If by media type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Letta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an audio file": {
+      "main": [
+        []
+      ]
+    },
+    "Generate audio": {
+      "main": [
+        [
+          {
+            "node": "Send an audio file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If by media type": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get audio": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by type": {
+      "main": [
+        [
+          {
+            "node": "Letta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Route by type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "54d00e049b1cac29d0ca14ad746de236ffb3e85c2d24d6c293bec1a5142ddd16"
+  }
+}
