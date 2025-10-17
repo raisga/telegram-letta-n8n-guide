@@ -1,0 +1,106 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Keep typing indicator active",
+        "height": 256,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "d77f8277-d3e8-41e4-bfe2-1533ca2b062a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "amount": "=5"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        208
+      ],
+      "id": "e2f0c18f-efb6-4967-9f7c-d14b1517ef19",
+      "name": "5000ms",
+      "webhookId": "ed926534-45a6-49ba-a10a-0ad31f524529"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Trigger').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -96,
+        208
+      ],
+      "id": "96d13f86-a95e-4952-bf53-4832230f7f2c",
+      "name": "Typing indicator",
+      "webhookId": "33426bcb-d3eb-4620-a282-68301a3281bc",
+      "credentials": {
+        "telegramApi": {
+          "id": "S2V9BbqgghM1McJ5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -352,
+        208
+      ],
+      "id": "cad127ce-6f70-4cf6-aade-f81d90b5de6c",
+      "name": "Trigger"
+    }
+  ],
+  "connections": {
+    "5000ms": {
+      "main": [
+        [
+          {
+            "node": "Typing indicator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Typing indicator": {
+      "main": [
+        [
+          {
+            "node": "5000ms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger": {
+      "main": [
+        [
+          {
+            "node": "Typing indicator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "54d00e049b1cac29d0ca14ad746de236ffb3e85c2d24d6c293bec1a5142ddd16"
+  }
+}

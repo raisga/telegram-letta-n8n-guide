@@ -1,0 +1,132 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        176
+      ],
+      "id": "8bbb23cb-7e55-46de-846c-9e3b937cf9b6",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-globals.globalConstants",
+      "typeVersion": 1,
+      "position": [
+        80,
+        176
+      ],
+      "id": "f14c1ae9-30fe-40db-acf6-2b062e118a37",
+      "name": "Global Constants1",
+      "credentials": {
+        "globalConstantsApi": {
+          "id": "CthfkYLQTPa4Dyj2",
+          "name": "Global Constants account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Register Prod hook and sends a message to test",
+        "height": 256,
+        "width": 368
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        256,
+        80
+      ],
+      "id": "242dbf66-15d0-4686-b36d-b39c1b484288",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $json.constants.TELEGRAM_BOT_TOKEN }}/setWebhook?url={{ $json.constants.TELEGRAM_PROD_HOOK }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        176
+      ],
+      "id": "897a0391-4993-459d-b76e-286880527146",
+      "name": "Prod Hook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $('Global Constants1').item.json.constants.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Global Constants1').item.json.constants.TELEGRAM_CHAT_ID }}"
+            },
+            {
+              "name": "text",
+              "value": "."
+            },
+            {
+              "name": "disable_notification",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        496,
+        176
+      ],
+      "id": "3d778b1c-05d5-40c1-82be-90c631b4c166",
+      "name": "Send Test Msg"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Global Constants1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Global Constants1": {
+      "main": [
+        [
+          {
+            "node": "Prod Hook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prod Hook": {
+      "main": [
+        [
+          {
+            "node": "Send Test Msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "54d00e049b1cac29d0ca14ad746de236ffb3e85c2d24d6c293bec1a5142ddd16"
+  }
+}

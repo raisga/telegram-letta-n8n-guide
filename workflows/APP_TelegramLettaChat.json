@@ -13,8 +13,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        656,
-        -16
+        560,
+        160
       ],
       "id": "8d67e18b-67f0-47bf-a224-fe3888d2b7b9",
       "name": "Telegram Trigger",
@@ -31,8 +31,8 @@
       "type": "n8n-nodes-globals.globalConstants",
       "typeVersion": 1,
       "position": [
-        992,
-        -16
+        896,
+        160
       ],
       "id": "4621d195-6828-412f-a545-01be92109f7f",
       "name": "Global Constants",
@@ -56,8 +56,8 @@
       "type": "@letta-ai/n8n-nodes-letta.letta",
       "typeVersion": 1,
       "position": [
-        2272,
-        -32
+        2176,
+        144
       ],
       "id": "f2383f08-1dae-4379-94c1-8e83c94620d5",
       "name": "Letta",
@@ -79,8 +79,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2896,
-        -48
+        2800,
+        128
       ],
       "id": "f04855d0-53d8-4488-a599-2f1ac4c711c9",
       "name": "Send a text message",
@@ -101,8 +101,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        2016,
-        112
+        1904,
+        336
       ],
       "id": "6fea46ae-7645-4ccb-9b8f-f9dc8d3ca759",
       "name": "Transcribe a recording",
@@ -123,8 +123,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2896,
-        144
+        2800,
+        320
       ],
       "id": "d86453e0-717f-45c1-9596-c97cd1780dec",
       "name": "Send an audio file",
@@ -147,8 +147,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        2704,
-        144
+        2608,
+        320
       ],
       "id": "cab0d233-d427-4846-b3ed-702c3dc05b7c",
       "name": "Generate audio",
@@ -220,8 +220,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2496,
-        -32
+        2400,
+        144
       ],
       "id": "ea5fcf89-77af-4432-aa7d-c6b45595bcf7",
       "name": "If by media type"
@@ -234,8 +234,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1840,
-        112
+        1728,
+        336
       ],
       "id": "843d6f17-ae30-4805-a53a-5e21585144c1",
       "name": "Get audio",
@@ -249,21 +249,6 @@
     },
     {
       "parameters": {
-        "content": "## Reply indicator",
-        "height": 240,
-        "width": 224
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1200,
-        -80
-      ],
-      "typeVersion": 1,
-      "id": "ebdc74ae-646d-4550-bf2d-3500f83a2017",
-      "name": "Sticky Note"
-    },
-    {
-      "parameters": {
         "content": "## Receives Telegram message (text or audio)",
         "height": 256,
         "width": 352,
@@ -271,8 +256,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        528,
-        -112
+        432,
+        64
       ],
       "typeVersion": 1,
       "id": "29232bf1-a023-4807-a094-e203b50f6c76",
@@ -287,8 +272,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        928,
-        -112
+        832,
+        64
       ],
       "typeVersion": 1,
       "id": "a07a693a-2b9e-461e-b0ca-484e534dd468",
@@ -298,13 +283,13 @@
       "parameters": {
         "content": "## Transcribe audio",
         "height": 224,
-        "width": 400,
+        "width": 384,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1776,
-        48
+        1680,
+        272
       ],
       "typeVersion": 1,
       "id": "7e56ad4f-0aac-464b-8d51-7b187cdcf773",
@@ -319,8 +304,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2224,
-        -96
+        2128,
+        80
       ],
       "typeVersion": 1,
       "id": "005993a4-79d5-44cf-bff7-ec25e1feb099",
@@ -328,19 +313,50 @@
     },
     {
       "parameters": {
-        "content": "## Send message Telegram bot",
+        "content": "## Sends Telegram message using bot (text or audio)",
         "height": 416,
         "width": 624,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2464,
-        -96
+        2368,
+        80
       ],
       "typeVersion": 1,
       "id": "76a6338a-2258-4a50-8298-6cf7a38560b3",
       "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Route (by message type) --> text/audio",
+        "height": 256,
+        "width": 256,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1104,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "5a800dcb-a00a-4a1f-a160-e499c429d48c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Reply indicators",
+        "height": 432,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1408,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "ebdc74ae-646d-4550-bf2d-3500f83a2017",
+      "name": "Sticky Note"
     },
     {
       "parameters": {
@@ -403,35 +419,49 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        1552,
-        -16
+        1184,
+        160
       ],
       "id": "3ba1fb31-c9c6-48a0-a835-70ec164e2be4",
       "name": "Route by type"
     },
     {
       "parameters": {
-        "content": "## Route (if voice note)",
-        "height": 240,
-        "width": 256,
-        "color": 2
+        "workflowId": {
+          "__rl": true,
+          "value": "puxrHJz04Es6cJlq",
+          "mode": "list",
+          "cachedResultName": "UTL_TelegramTypingIndicator"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
       },
-      "type": "n8n-nodes-base.stickyNote",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
       "position": [
         1472,
-        -80
+        144
       ],
-      "typeVersion": 1,
-      "id": "5a800dcb-a00a-4a1f-a160-e499c429d48c",
-      "name": "Sticky Note3"
+      "id": "24e2612c-2554-4ffc-a9c9-b6817b5a9042",
+      "name": "Show typing indicator",
+      "executeOnce": false
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "xuKNBTeWp8fC3OGq",
+          "value": "hiNObjeRSC3Z087K",
           "mode": "list",
-          "cachedResultName": "AI_TelegramChat"
+          "cachedResultName": "UTL_TelegramRecordingIndicator"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -446,11 +476,11 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        1264,
-        -16
+        1472,
+        336
       ],
-      "id": "24e2612c-2554-4ffc-a9c9-b6817b5a9042",
-      "name": "Execute Workflow"
+      "id": "0d3532f2-49f7-4085-828e-2dba73c54fba",
+      "name": "Show recording indicator"
     }
   ],
   "connections": {
@@ -469,7 +499,7 @@
       "main": [
         [
           {
-            "node": "Execute Workflow",
+            "node": "Route by type",
             "type": "main",
             "index": 0
           }
@@ -552,25 +582,36 @@
       "main": [
         [
           {
-            "node": "Letta",
+            "node": "Show typing indicator",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Get audio",
+            "node": "Show recording indicator",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Execute Workflow": {
+    "Show typing indicator": {
       "main": [
         [
           {
-            "node": "Route by type",
+            "node": "Letta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Show recording indicator": {
+      "main": [
+        [
+          {
+            "node": "Get audio",
             "type": "main",
             "index": 0
           }
