@@ -1,4 +1,4 @@
-# Interact with your Letta agent using n8n and Telegram
+# Interact with your Letta AI agent using Telegram text messages or audio recordings
 
 Chat with your stateful AI agent with long-term memory in your n8n workflows using a Telegram bot.
 This document covers installation, credentials, and workflow implementation.
@@ -39,11 +39,15 @@ Then rebuild/restart n8n.
 
 ### Create Letta credentials in n8n
 
+![new-cred](./screenshots/n8n_new-cred.jpg)
+
 1. Open the **Credentials** screen → **New** → choose **Letta API**.
 2. Fill in:
 
    * **API Token**: your Letta token (from the Letta dashboard).
    * **Base URL**: `https://api.letta.com` (or your self-hosted URL).
+
+![letta-cred](./screenshots/n8n_letta-cred.jpg)
 
 > Where to get the token: Letta dashboard → API settings → generate token.
 
@@ -52,6 +56,8 @@ Then rebuild/restart n8n.
 You can create a workflow that listens for new Telegram messages and forwards them to your Letta agent, then sends the agent's response back to the user.
 
 ### Basic workflow
+
+![n8n workflow basic](./screenshots/n8n_search-letta-node.jpg)
 
 1. Create a new workflow in n8n.
 2. Add a **Telegram Trigger** node:
@@ -70,14 +76,14 @@ You can create a workflow that listens for new Telegram messages and forwards th
 
 See the complete workflow example [Telegram Letta Chat](./workflows/telegram-letta-chat.json).
 
-![n8n workflow example](./n8n_workflow-telegram-letta-chat.jpg)
+![n8n workflow](./screenshots/n8n_workflow-telegram-chat.jpg)
 
 It uses the following sub-workflows:
 
 - [Telegram Reply Indicators](./workflows/telegram-reply-indicators.json): shows a "typing..." indicator or an audio recoding while the agent processes the message.
 
-![n8n workflow example](./n8n_workflow-telegram-reply-indicators.jpg)
+![n8n reply indicators](./screenshots/n8n_workflow-reply-indicators.jpg)
 
 ## Resources
 
-[1]: https://github.com/letta-ai/n8n-nodes-letta "GitHub - letta-ai/n8n-nodes-letta: This is the official n8n node that allows you to integrate Letta AI agents into your n8n workflows."
+- https://github.com/letta-ai/n8n-nodes-letta
