@@ -2,6 +2,12 @@
 
 Chat with your stateful AI agent with long-term memory in your n8n workflows using a Telegram bot.
 
+
+
+https://github.com/user-attachments/assets/9b694a36-4cc4-4039-83c2-6a9297f5d312
+
+
+
 This document covers installation, credentials, and workflow implementation.
 
 ## Pre-requisites
