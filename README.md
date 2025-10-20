@@ -1,6 +1,7 @@
 # Interact with your Letta AI agent using Telegram text messages or audio recordings
 
 Chat with your stateful AI agent with long-term memory in your n8n workflows using a Telegram bot.
+
 This document covers installation, credentials, and workflow implementation.
 
 ## Pre-requisites
