@@ -116,6 +116,14 @@ It uses the following sub-workflows:
 
 ^ You may want to run this workflow to set up the Telegram production webhook for your bot, so you don't have to manually poll for updates (aka clicking "Execute Workflow" like a Cookie Clicker game :P).
 
+## Known Issues and Limitations
+
+- Telegram Trigger node may not work properly with webhooks in some n8n versions. If you experience issues, consider using polling mode or refer to [Common Issues](https://docs.n8n.io/integrations/builtin/trigger-nodes/n8n-nodes-base.telegramtrigger/common-issues/) for troubleshooting.
+- Typing and recording indicators may not display correctly if the main workflow takes too long to process. Refer to [this community post](https://community.n8n.io/t/how-to-make-telegram-action-typing-work-while-ai-agent-processing/69149/5) for solutions.
+- Filtering bots commands (e.g., `/start`, `/help`, etc...) is not implemented in the sample workflow. You may want to add logic to ignore such commands in your workflow.
+- Audio message transcription requires integration with a speech-to-text service, which is not covered in the sample workflow.
+- Letta community node may have limitations or bugs
+
 ## Resources
 
 1. https://github.com/letta-ai/n8n-nodes-letta
